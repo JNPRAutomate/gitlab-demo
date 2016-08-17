@@ -45,5 +45,36 @@ To Experiment with Gitlab and Gitlab-CI you can import the follwing project
 ```
 https://github.com/JNPRautomate/ansible-junos-evpn-vxlan
 ```
-
 It already include a the necessary [instructions for Gitlab_CI](https://github.com/JNPRAutomate/ansible-junos-evpn-vxlan/blob/master/.gitlab-ci.yml)
+
+## 1 - Create the project
+- Create a new project [http://localhost:9090/projects/new](http://localhost:9090/projects/new)
+- Name your project **test-gitlab** in `project name`
+- Choose "Git Repo by URL"
+- Copy the URL of the project in `Git repository URL`
+- Validate with `create project` button
+> the name of the project is important because it will be used in all following URL
+> If you decide to use another name, please keep in mind that you'll need to change all URL
+
+## 2 - Create a new branch: feature1 and change a file
+- Create a new branch - [http://localhost:9090/root/test-gitlab/branches/new](http://localhost:9090/root/test-gitlab/branches/new)
+- Name the branch **feature** in `Branch Name`
+
+- Edit the file `README.md` here http://localhost:9090/root/test-gitlab/edit/feature1/README.md
+- Save the change by doing a commit on Branch `feature1` (default option)
+
+## 3 - Verify that tests are running for the new change
+At this point, Gitlab will start a Build/Test process for this new Branch
+You can check its progress here : [http://localhost:9090/root/test-gitlab/pipelines](http://localhost:9090/root/test-gitlab/pipelines)
+> Because we are not in the branch Master, only `check_playbooks` will be executed
+
+## 4 - Create a new Merge Request to incorporate the changes in the Branch master
+- open a merge request : http://localhost:9090/root/test-gitlab/merge_requests/new
+ - Source Branch is: `feature1`
+ - Target Branch is: `master`
+
+Once the Merge request has been created you should already see the result of the last Build on the merge request page
+`CI build passed for XX`
+
+## 5 - Verify that both TEST and DEPLOY stages are executed for the branch master
+Once the new code has been migrated into the branch master, a new build is triggered and this time both TEST and DEPLOY Stage will be executed.
