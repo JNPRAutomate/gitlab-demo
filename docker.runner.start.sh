@@ -16,11 +16,11 @@ echo "Registration token is: $registration_token"
 docker run -d \
         --name gitlab-runner-$random_id \
   			-v /var/run/docker.sock:/var/run/docker.sock \
-				--link gitlab:CI \
+				--link gitlab:gitlab \
   		  gitlab/gitlab-runner:alpine
 
 # Register Runner
-docker exec -it gitlab-runner \
+docker exec -it gitlab-runner-$random_id \
     gitlab-runner register \
     --non-interactive \
     --url "http://gitlab:9090/ci"\
@@ -31,5 +31,5 @@ docker exec -it gitlab-runner \
     --docker-image "ruby:2.1" \
     --registration-token "$registration_token"
 
-echo "Registered Runner: runner-docker-$random_id "
+echo "Registered Runner: runner-docker-$random_id (in container:gitlab-runner-$random_id) "
 # https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/install/docker.md
